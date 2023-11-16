@@ -13,7 +13,8 @@
     "client/node_modules"
   ],
   "scripts": {
-    "dev": "nodemon server.mjs",
+    "start-dev": "next dev",
+    "start-server-dev": "nodemon server.mjs",
     "build": "next build",
     "start": "NODE_ENV=production node server.mjs",
     "lint": "next lint"

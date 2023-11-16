@@ -16,12 +16,12 @@ const handle = app.getRequestHandler();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const CLIENT_ID = process.env.CLIENT_ID;
-const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const REDIRECT_URI = process.env.REDIRECT_URI;
-const PORT = process.env.PORT || 8888;
-
 app.prepare().then(() => {
+
+  const CLIENT_ID = process.env.CLIENT_ID;
+  const CLIENT_SECRET = process.env.CLIENT_SECRET;
+  const REDIRECT_URI = process.env.REDIRECT_URI;
+  const PORT = process.env.PORT || 8888;
 
   const server = express();
 
