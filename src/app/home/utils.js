@@ -29,5 +29,5 @@ export const formatDuration = (ms) => {
 export const BACKEND_URI = () => {
   return process.env.NODE_ENV !== 'production' 
     ? 'http://localhost:8888' 
-    : 'https://tunetrove-59ee9ee71485.herokuapp.com/'
+    : 'https://www.hussainabdi.com'
 }
