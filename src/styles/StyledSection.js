@@ -30,6 +30,13 @@ const StyledSection = styled.section`
     display: flex;
     margin: 0;
     font-size: var(--fz-xxl);
+
+    a {
+      &:hover,
+      &:focus {
+        text-decoration-line: underline;
+      }
+    }
   }
 
   .section__breadcrumb {
