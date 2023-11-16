@@ -24,12 +24,6 @@ const StyledSection = styled.section`
     justify-content: space-between;
     align-items: stretch;
     margin-bottom: var(--spacing-xl);
-  }
-
-  .section__heading {
-    display: flex;
-    margin: 0;
-    font-size: var(--fz-xxl);
 
     a {
       &:hover,
@@ -37,6 +31,14 @@ const StyledSection = styled.section`
         text-decoration-line: underline;
       }
     }
+  }
+
+  .section__heading {
+    display: flex;
+    margin: 0;
+    font-size: var(--fz-xxl);
+
+    
   }
 
   .section__breadcrumb {
