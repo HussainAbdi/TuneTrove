@@ -1,0 +1,16 @@
+{
+  "name": "TuneTrove by ABDI",
+  "short_name": "TuneTrove",
+  "description": "Web app to visualize personalized Spotify data",
+  "start_url": "/",
+  "theme_color": "#1DB954",
+  "background_color": "#181818",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "any",
+      "type": "image/x-icon"
+    }
+  ]
+}
