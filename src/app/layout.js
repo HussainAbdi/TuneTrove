@@ -5,6 +5,7 @@ import { Inter } from 'next/font/google';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
+  metadataBase: new URL(`${process.env.FRONTEND_URI}`),
   title: 'TuneTrove',
   description: 'Web app to visualize personalized Spotify data',
 };
