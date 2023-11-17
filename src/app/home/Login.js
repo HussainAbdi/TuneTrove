@@ -48,7 +48,7 @@ const Login = () => (
           <div className={styles.ABDIlogo}>
               <Image
                 src="/ABDI-Green-2.svg"
-                alt="Vercel Logo"
+                alt="ABDI Logo"
                 width={80}
                 height={65}
                 priority
