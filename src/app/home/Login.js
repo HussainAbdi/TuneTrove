@@ -45,7 +45,7 @@ const Login = () => (
           <p>
             <code className={styles.code}>TuneTrove</code>
           </p>
-          <div className={styles.ABDIlogo}>
+          <div>
               <Image
                 src="/ABDI-Green-2.svg"
                 alt="ABDI Logo"
