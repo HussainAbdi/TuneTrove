@@ -46,26 +46,32 @@ app.prepare().then(() => {
   const stateKey = 'spotify_auth_state';
 
   server.get('/login', (req, res) => {
-    const state = generateRandomString(16);
-    res.cookie(stateKey, state);
+    const staticProfile = req.query.static_profile || null;
 
-    const scope = [
-      'user-read-private',
-      'user-read-email', 
-      'user-top-read',
-      'playlist-modify-public',
-      'playlist-modify-private'
-    ].join(' ');
+    if (staticProfile) {
+      res.redirect(`/?static_profile=true`);
+    } else {
+      const state = generateRandomString(16);
+      res.cookie(stateKey, state);
 
-    const queryParams = querystring.stringify({
-      client_id: CLIENT_ID,
-      response_type: 'code',
-      redirect_uri: REDIRECT_URI,
-      state: state,
-      scope: scope
-    });
-    
-    res.redirect(`https://accounts.spotify.com/authorize?${queryParams}`);
+      const scope = [
+        'user-read-private',
+        'user-read-email', 
+        'user-top-read',
+        'playlist-modify-public',
+        'playlist-modify-private'
+      ].join(' ');
+
+      const queryParams = querystring.stringify({
+        client_id: CLIENT_ID,
+        response_type: 'code',
+        redirect_uri: REDIRECT_URI,
+        state: state,
+        scope: scope
+      });
+      
+      res.redirect(`https://accounts.spotify.com/authorize?${queryParams}`);
+    }
   });
 
   server.get('/callback', (req, res) => {

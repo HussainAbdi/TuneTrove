@@ -1,7 +1,7 @@
 "use client"; // Specifying that this is a client component
 
 import { Suspense, useEffect, useState } from 'react';
-import { accessToken, logout } from './spotify';
+import { profileType, logout } from './spotify';
 import styles from '@/styles/page.module.css';
 import { Login } from '@/app/home';
 import styled from 'styled-components';
@@ -23,15 +23,23 @@ const StyledLogoutButton = styled.button`
 `;
 
 export default function HomeLayout({children}) {
-  const [token, setToken] = useState(null);
+  const [profile, setProfile] = useState({
+    token: null,
+    staticProfile: false
+  })
 
   useEffect(()=>{
-    setToken(accessToken);
+    setProfile({
+      token: profileType.token,
+      staticProfile: profileType.staticProfile
+    })
   }, [])
+
+  console.log(`token: ${profileType?.token}, static: ${profileType?.staticProfile}`);
 
   return (
     <div>
-      {!token ? (
+      {!profile.token && !profile.staticProfile ? (
         <Login />
       ) : (
         <>
