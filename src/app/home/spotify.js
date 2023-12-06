@@ -111,17 +111,8 @@ const getProfileType = () =>{
 
   console.log(queryParams);
 
-  //Handle static case
+  // Prioritize login in this order: URL params, static page, access token
 
-  // If valid static profile boolean in local storage
-  if (LOCALSTORAGE_VALUES.isStaticProfile && LOCALSTORAGE_VALUES.isStaticProfile !== 'undefined') {
-    console.log
-    return {
-      token: false,
-      staticProfile: LOCALSTORAGE_VALUES.isStaticProfile
-    };
-  }
-  
   // If there is static profile in URL params, user has gone into static profile for the first time
   if (queryParams[LOCALSTORAGE_KEYS.isStaticProfile]) {
     // Store static profile boolean in local storage
@@ -133,24 +124,6 @@ const getProfileType = () =>{
     };
   }
 
-  
-  //Handle access token case
-  const hasError = urlParams.get('error');
-
-  // If error or access token has expired or access token in local storage not defined
-  if (hasError || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
-    refreshToken();
-  }
-
-  // If valid access token in local storage
-  if (LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {
-    console.log
-    return {
-      token: LOCALSTORAGE_VALUES.accessToken,
-      staticProfile: false
-    };
-  }
-  
   // If there is a token in the URL params, user is logging in for the first time
   if (queryParams[LOCALSTORAGE_KEYS.accessToken]) {
     // Store all params in localStorage
@@ -162,6 +135,31 @@ const getProfileType = () =>{
     // Return access token from query params
     return {
       token: queryParams[LOCALSTORAGE_KEYS.accessToken],
+      staticProfile: false
+    };
+  }
+
+  // If valid static profile boolean in local storage
+  if (LOCALSTORAGE_VALUES.isStaticProfile && LOCALSTORAGE_VALUES.isStaticProfile !== 'undefined') {
+    console.log
+    return {
+      token: false,
+      staticProfile: LOCALSTORAGE_VALUES.isStaticProfile
+    };
+  }
+  
+  //Handle access token case
+  const hasError = urlParams.get('error');
+
+  // If error or access token has expired or access token in local storage not defined
+  if (hasError || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
+    refreshToken();
+  }
+  
+  // If valid access token in local storage
+  if (LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {
+    return {
+      token: LOCALSTORAGE_VALUES.accessToken,
       staticProfile: false
     };
   }
