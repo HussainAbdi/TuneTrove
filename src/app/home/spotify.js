@@ -29,6 +29,32 @@ if (!SSR) {
 }
 
 /**
+ * If we are using access token, then we must set axios defaults for our requests.
+ * Requires profileType.token to be populated with correct access token.
+ * @returns {void}
+ */
+const setAxiosHeaders = (token) => {
+  /**
+   * Axios global request headers
+   * https://github.com/axios/axios#global-axios-defaults
+   */
+  axios.defaults.baseURL = 'https://api.spotify.com/v1';
+  axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+  axios.defaults.headers['Content-Type'] = 'application/json';
+}
+
+/**
+ * If we are using a static profile, we must clear axios defaults so that if we make requests
+ * they are not using an access token and will throw a bad request error
+ * @returns {void}
+ */
+const clearAxiosHeaders = () => {
+  axios.defaults.baseURL = '';
+  axios.defaults.headers['Authorization'] = ``;
+  axios.defaults.headers['Content-Type'] = '';
+}
+
+/**
  * Clears out localStorage and navigates to homepage
  * @returns {void}
  */
@@ -81,6 +107,7 @@ const refreshToken = async () => {
     window.localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.access_token);
     window.localStorage.setItem(LOCALSTORAGE_KEYS.timestamp, Date.now());
     window.localStorage.setItem(LOCALSTORAGE_KEYS.expireTime, data.expires_in);
+    setAxiosHeaders(data.access_token);
 
     // Reload app for changes to take effect
     window.location.reload();
@@ -115,6 +142,7 @@ const getProfileType = () =>{
 
   // If there is static profile in URL params, user has gone into static profile for the first time
   if (queryParams[LOCALSTORAGE_KEYS.isStaticProfile]) {
+    clearAxiosHeaders();
     // Store static profile boolean in local storage
     window.localStorage.setItem(LOCALSTORAGE_KEYS.isStaticProfile, queryParams[LOCALSTORAGE_KEYS.isStaticProfile]);
 
@@ -126,6 +154,7 @@ const getProfileType = () =>{
 
   // If there is a token in the URL params, user is logging in for the first time
   if (queryParams[LOCALSTORAGE_KEYS.accessToken]) {
+    setAxiosHeaders(queryParams[LOCALSTORAGE_KEYS.accessToken]);
     // Store all params in localStorage
     for (const property in queryParams) {
       window.localStorage.setItem(property, queryParams[property]);
@@ -140,8 +169,9 @@ const getProfileType = () =>{
   }
 
   // If valid static profile boolean in local storage
-  if (LOCALSTORAGE_VALUES.isStaticProfile && LOCALSTORAGE_VALUES.isStaticProfile !== 'undefined') {
-    console.log
+  if (LOCALSTORAGE_VALUES.isStaticProfile && LOCALSTORAGE_VALUES.isStaticProfile !== 'null') {
+    console.log("SETTING STATIC")
+    clearAxiosHeaders();
     return {
       token: false,
       staticProfile: LOCALSTORAGE_VALUES.isStaticProfile
@@ -158,6 +188,7 @@ const getProfileType = () =>{
   
   // If valid access token in local storage
   if (LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {
+    setAxiosHeaders(LOCALSTORAGE_VALUES.accessToken);
     return {
       token: LOCALSTORAGE_VALUES.accessToken,
       staticProfile: false
@@ -172,18 +203,6 @@ const getProfileType = () =>{
 };
 
 export const profileType = getProfileType();
-
-// TODO: This check means that if we are static and make API requests somehow then it will throw
-// Unauthorized error!
-if (profileType?.token){
-  /**
-   * Axios global request headers
-   * https://github.com/axios/axios#global-axios-defaults
-   */
-  axios.defaults.baseURL = 'https://api.spotify.com/v1';
-  axios.defaults.headers['Authorization'] = `Bearer ${profileType.token}`;
-  axios.defaults.headers['Content-Type'] = 'application/json';
-}
 
 /**
  * Get Current User's Profile - store Spotify User ID in localStorage
