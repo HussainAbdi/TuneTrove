@@ -1,6 +1,6 @@
 "use client";
 
-import { getPlaylistById, getAudioFeaturesForTracks } from "@/app/home/spotify";
+import { getPlaylistById, getAudioFeaturesForTracks, profileType } from "@/app/home/spotify";
 import { useState, useEffect, useMemo } from "react";
 import { catchErrors } from "@/app/home/utils";
 import { StyledHeader, StyledDropdown } from "@/styles";
@@ -14,8 +14,6 @@ export default function Playlist({params}) {
   const [audioFeatures, setAudioFeatures] = useState(null)
   const [sortValue, setSortValue] = useState('');
   const sortOptions = ['danceability', 'tempo', 'energy'];
-
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +31,7 @@ export default function Playlist({params}) {
     }
 
     const fetchMoreData = async () => {
-      if (tracksData.next){
+      if (tracksData.next && profileType.token){
         const { data } = await axios.get(tracksData.next)
         // We use data and not data.tracks here because now we have got the tracks next url which returns tracks 
         // Using data.tracks was preventing us from getting next tracks and I wasn't sure why at the time
