@@ -1,6 +1,6 @@
 import axios from "axios";
 import { staticUserProfile, staticArtistsShortTerm, staticTracksShortTerm, 
-  staticPlaylists, staticArtistsMediumTerm, staticArtistsLongTerm, 
+  staticPlaylists, staticPlaylistsTracks, staticArtistsMediumTerm, staticArtistsLongTerm, 
   staticTracksMediumTerm, staticTracksLongTerm } from "@/static-profile"
 import { BACKEND_URI } from "./utils";
 
@@ -288,6 +288,16 @@ export const getTopTracks = (time_range = 'short_term', limit = 20) => {
  * @returns {Promise}
  */
 export const getPlaylistById = (playlist_id) => {
+  if (profileType.staticProfile) {
+    const numPlaylists = staticPlaylistsTracks.playlists.length;
+
+    for (let i = 0; i < numPlaylists; i++) {
+      const playlist = staticPlaylistsTracks.playlists[i];
+      if (playlist.data.id == playlist_id) {
+        return playlist;
+      }
+    }
+  }
   return axios.get(`/playlists/${playlist_id}`);
 }
 

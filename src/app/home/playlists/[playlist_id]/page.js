@@ -19,7 +19,12 @@ export default function Playlist({params}) {
     const fetchData = async () => {
       const {data} = await getPlaylistById(params.playlist_id);
       setPlaylist(data);
-      setTracksData(data.tracks);
+      if (profileType.token) {
+        setTracksData(data.tracks);
+      }else if (profileType.staticProfile){
+        const tracksObject = data.tracks.items.map(item => item.track);
+        setTracks(tracksObject);
+      }
     }
 
     catchErrors(fetchData());
@@ -130,26 +135,41 @@ export default function Playlist({params}) {
 
         <main>
           <SectionWrapper title="Playlist" breadcrumb="true">
-            <StyledDropdown active={sortValue}>
-              <label className="sr-only" htmlFor="order-select">Sort Tracks</label>
-              <select 
-                name="track-order"
-                id="order-select"
-                onChange={e => setSortValue(e.target.value)}
-              >
-                <option value="">Sort tracks</option>
-                {sortOptions.map((option, i) => (
-                  <option value={option} key={i}>
-                    {`${option.charAt(0).toUpperCase()}${option.slice(1)}`}
-                  </option>
-                ))}
-              </select>
-            </StyledDropdown>
-            {sortedTracks ? (
-              <TrackList tracks={sortedTracks} />
-            ) : (
-              <Loader />
+            {profileType.token && (
+              <StyledDropdown active={sortValue}>
+                <label className="sr-only" htmlFor="order-select">Sort Tracks</label>
+                <select 
+                  name="track-order"
+                  id="order-select"
+                  onChange={e => setSortValue(e.target.value)}
+                >
+                  <option value="">Sort tracks</option>
+                  {sortOptions.map((option, i) => (
+                    <option value={option} key={i}>
+                      {`${option.charAt(0).toUpperCase()}${option.slice(1)}`}
+                    </option>
+                  ))}
+                </select>
+              </StyledDropdown>
             )}
+            {profileType.token ? (
+              <>
+                {sortedTracks ? (
+                  <TrackList tracks={sortedTracks} />
+                ) : (
+                  <Loader />
+                )}
+              </>
+            ) : (
+              <>
+                {tracks ? (
+                  <TrackList tracks={tracks} />
+                ): (
+                  <Loader />
+                )}
+              </>
+            )
+            }
           </SectionWrapper>
         </main>
     </>
