@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getTopTracks, getCurrentUserID, createPlaylist } from "@/app/home/spotify";
+import { getTopTracks, getCurrentUserID, createPlaylist, profileType } from "@/app/home/spotify";
 import { catchErrors } from "@/app/home/utils";
 import { SectionWrapper, TrackList, TimeRangeButtons, Loader} from "@/components";
 import StyledPlaylistButton from "@/styles/StyledPlaylistButton";
@@ -64,21 +64,23 @@ const topTracks = () => {
   return (
     <main>
       <SectionWrapper title="Top Tracks" breadcrumb="true">
-        <StyledPlaylistButton>
-          {createButtonsVisible[timeRange] && userID && topTracks && !playlistURIs[timeRange] && (
-              <button onClick={handleCreatePlaylist}>
-                Create Playlist
+        {profileType.token && (
+          <StyledPlaylistButton>
+            {createButtonsVisible[timeRange] && userID && topTracks && !playlistURIs[timeRange] && (
+                <button onClick={handleCreatePlaylist}>
+                  Create Playlist
+                </button>
+            )}
+            {!createButtonsVisible[timeRange] && !openButtonsVisible[timeRange] && (
+              <button>
+                <Loader button="true"/>
               </button>
-          )}
-          {!createButtonsVisible[timeRange] && !openButtonsVisible[timeRange] && (
-            <button>
-              <Loader button="true"/>
-            </button>
-          )}
-          {openButtonsVisible[timeRange] && (
-            <a href={playlistURIs[timeRange]}><button>Open Playlist</button></a>
-          )}
-        </StyledPlaylistButton>
+            )}
+            {openButtonsVisible[timeRange] && (
+              <a href={playlistURIs[timeRange]}><button>Open Playlist</button></a>
+            )}
+          </StyledPlaylistButton>
+        )}
         <TimeRangeButtons timeRange={timeRange} setTimeRange={setTimeRange} />
         {topTracks ? (
           <TrackList tracks={topTracks.items} />
