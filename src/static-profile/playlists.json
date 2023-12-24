@@ -559,46 +559,54 @@
       "type" : "playlist",
       "uri" : "spotify:playlist:3AZJJyfkAzv7CqWkPfosv6"
     }, {
-      "collaborative" : false,
-      "description" : "",
-      "external_urls" : {
-        "spotify" : "https://open.spotify.com/playlist/7kB9lZW51CRwhIidn3T6EN"
+      "collaborative": false,
+      "external_urls": {
+        "spotify": "https://open.spotify.com/playlist/6L3l6aoLY9QkTIQqIovDVz"
       },
-      "href" : "https://api.spotify.com/v1/playlists/7kB9lZW51CRwhIidn3T6EN",
-      "id" : "7kB9lZW51CRwhIidn3T6EN",
-      "images" : [ {
-        "height" : 640,
-        "url" : "https://mosaic.scdn.co/640/ab67616d0000b2732a6e7979e09c27c67e505a8dab67616d0000b273a68c06155b7c3cf82b00cb96ab67616d0000b273d36aca2ee2eb5dfccedd71a4ab67616d0000b273f02f89a8300fd2e289c9a3df",
-        "width" : 640
-      }, {
-        "height" : 300,
-        "url" : "https://mosaic.scdn.co/300/ab67616d0000b2732a6e7979e09c27c67e505a8dab67616d0000b273a68c06155b7c3cf82b00cb96ab67616d0000b273d36aca2ee2eb5dfccedd71a4ab67616d0000b273f02f89a8300fd2e289c9a3df",
-        "width" : 300
-      }, {
-        "height" : 60,
-        "url" : "https://mosaic.scdn.co/60/ab67616d0000b2732a6e7979e09c27c67e505a8dab67616d0000b273a68c06155b7c3cf82b00cb96ab67616d0000b273d36aca2ee2eb5dfccedd71a4ab67616d0000b273f02f89a8300fd2e289c9a3df",
-        "width" : 60
-      } ],
-      "name" : "Re-listen",
-      "owner" : {
-        "display_name" : "Hussain Abdi",
-        "external_urls" : {
-          "spotify" : "https://open.spotify.com/user/habdi5"
+      "followers": {
+        "href": null,
+        "total": 0
+      },
+      "href": "https://api.spotify.com/v1/playlists/6L3l6aoLY9QkTIQqIovDVz",
+      "id": "6L3l6aoLY9QkTIQqIovDVz",
+      "images": [
+        {
+          "url": "https://mosaic.scdn.co/640/ab67616d00001e0273316abedd0635a9e3f5117fab67616d00001e02a89ab2c337ac15880c8eda06ab67616d00001e02ba29610535ea9076557ff634ab67616d00001e02bbc1bdc6aae17e5a3a0873c7",
+          "height": 640,
+          "width": 640
         },
-        "href" : "https://api.spotify.com/v1/users/habdi5",
-        "id" : "habdi5",
-        "type" : "user",
-        "uri" : "spotify:user:habdi5"
+        {
+          "url": "https://mosaic.scdn.co/300/ab67616d00001e0273316abedd0635a9e3f5117fab67616d00001e02a89ab2c337ac15880c8eda06ab67616d00001e02ba29610535ea9076557ff634ab67616d00001e02bbc1bdc6aae17e5a3a0873c7",
+          "height": 300,
+          "width": 300
+        },
+        {
+          "url": "https://mosaic.scdn.co/60/ab67616d00001e0273316abedd0635a9e3f5117fab67616d00001e02a89ab2c337ac15880c8eda06ab67616d00001e02ba29610535ea9076557ff634ab67616d00001e02bbc1bdc6aae17e5a3a0873c7",
+          "height": 60,
+          "width": 60
+        }
+      ],
+      "primary_color": null,
+      "name": "The Other Sound",
+      "description": "",
+      "type": "playlist",
+      "uri": "spotify:playlist:6L3l6aoLY9QkTIQqIovDVz",
+      "owner": {
+        "href": "https://api.spotify.com/v1/users/habdi5",
+        "id": "habdi5",
+        "type": "user",
+        "uri": "spotify:user:habdi5",
+        "display_name": "Hussain Abdi",
+        "external_urls": {
+          "spotify": "https://open.spotify.com/user/habdi5"
+        }
       },
-      "primary_color" : null,
-      "public" : true,
-      "snapshot_id" : "MjgwLGJhNDMwZWQzZGQyYzg4Mjg1ZjhjNTIxMzJkMzEzMTkzODI4ZTkwNjU=",
+      "public": true,
+      "snapshot_id": "OCxjYmQ4YmQ2NjMzMDUzYTI5OGYyMGQ5MjczOTU1YzQwMWQxMGNmYjg4",
       "tracks" : {
-        "href" : "https://api.spotify.com/v1/playlists/7kB9lZW51CRwhIidn3T6EN/tracks",
-        "total" : 262
-      },
-      "type" : "playlist",
-      "uri" : "spotify:playlist:7kB9lZW51CRwhIidn3T6EN"
-    } ]
+        "href": "https://api.spotify.com/v1/playlists/6L3l6aoLY9QkTIQqIovDVz/tracks?offset=0&limit=100",
+        "total": 6
+      }
+    }]
   }
 }
