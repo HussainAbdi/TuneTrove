@@ -8,6 +8,11 @@ const StyledLoginContainer = styledComponents.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: var(--spacing-xxl) var(--spacing-lg);
+
+  @media (max-width: 700px) {
+    padding: var(--spacing-lg);
+  }
 `;
 
 const StyledLoginButton = styledComponents.a`
@@ -32,10 +37,13 @@ const CenteredContainer = styledComponents.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 60vh; /* Full viewport height */
 
   @media (max-width: 700px) {
     height: 75vh;
+  }
+
+  @media (min-width: 700px) and (max-height: 425px) {
+    flex-direction: row;
   }
 `;
 
