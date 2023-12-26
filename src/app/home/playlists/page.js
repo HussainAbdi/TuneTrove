@@ -2,7 +2,7 @@
 
 import { PlaylistsGrid, SectionWrapper, Loader } from '@/components'
 import { catchErrors } from '../utils';
-import { getCurrentUserPlaylists } from '../spotify';
+import { getCurrentUserPlaylists, profileType } from '../spotify';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
@@ -25,7 +25,7 @@ export default function Playlists() {
     }
 
     const fetchMoreData = async () => {
-      if (playlistsData.next){
+      if (playlistsData.next && profileType.token){
         const { data } = await axios.get(playlistsData.next);
         setPlaylistsData(data);
       }

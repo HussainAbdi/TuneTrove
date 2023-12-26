@@ -13,15 +13,19 @@ const Profile = () => {
   useEffect(() => {
     const fetchData = async () => {
       const userProfile = await getCurrentUserProfile();
+      //console.log(userProfile);
       setProfile(userProfile.data);
       
       const userPlaylists = await getCurrentUserPlaylists();
+      //console.log(userPlaylists);
       setPlaylists(userPlaylists.data);
 
       const userTopArtists = await getTopArtists();
+      //console.log(userTopArtists);
       setTopArtists(userTopArtists.data);
 
       const userTopTracks = await getTopTracks();
+      //console.log(userTopTracks.data);
       setTopTracks(userTopTracks.data);
     };
 

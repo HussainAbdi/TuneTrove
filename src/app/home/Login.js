@@ -57,8 +57,14 @@ const Login = () => (
     </div>
     <CenteredContainer>
       <StyledLoginContainer>
+        <StyledLoginButton href={`${BACKEND_URI()}/login?static_profile=true`} >
+          Log in with default profile
+        </StyledLoginButton>
+      </StyledLoginContainer>
+      OR
+      <StyledLoginContainer>
         <StyledLoginButton href={`${BACKEND_URI()}/login`} >
-          Log in to Spotify
+          Log in with early access
         </StyledLoginButton>
       </StyledLoginContainer>
     </CenteredContainer>

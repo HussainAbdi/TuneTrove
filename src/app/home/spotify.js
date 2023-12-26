@@ -1,4 +1,7 @@
 import axios from "axios";
+import { staticUserProfile, staticArtistsShortTerm, staticTracksShortTerm, 
+  staticPlaylists, staticPlaylistsTracks, staticArtistsMediumTerm, staticArtistsLongTerm, 
+  staticTracksMediumTerm, staticTracksLongTerm } from "@/static-profile"
 import { BACKEND_URI } from "./utils";
 
 // Boolean indicating rendering
@@ -9,7 +12,8 @@ const LOCALSTORAGE_KEYS = {
   accessToken: 'spotify_access_token',
   refreshToken: 'spotify_refresh_token',
   expireTime: 'spotify_token_expire_time',
-  timestamp: 'spotify_token_timestamp'
+  timestamp: 'spotify_token_timestamp',
+  isStaticProfile: 'static_profile'
 };
 
 // Map of localStorage values
@@ -19,8 +23,35 @@ if (!SSR) {
     accessToken: window.localStorage.getItem(LOCALSTORAGE_KEYS.accessToken),
     refreshToken: window.localStorage.getItem(LOCALSTORAGE_KEYS.refreshToken),
     expireTime: window.localStorage.getItem(LOCALSTORAGE_KEYS.expireTime),
-    timestamp: window.localStorage.getItem(LOCALSTORAGE_KEYS.timestamp)
+    timestamp: window.localStorage.getItem(LOCALSTORAGE_KEYS.timestamp),
+    isStaticProfile: window.localStorage.getItem(LOCALSTORAGE_KEYS.isStaticProfile)
   };
+}
+
+/**
+ * If we are using access token, then we must set axios defaults for our requests.
+ * Requires profileType.token to be populated with correct access token.
+ * @returns {void}
+ */
+const setAxiosHeaders = (token) => {
+  /**
+   * Axios global request headers
+   * https://github.com/axios/axios#global-axios-defaults
+   */
+  axios.defaults.baseURL = 'https://api.spotify.com/v1';
+  axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+  axios.defaults.headers['Content-Type'] = 'application/json';
+}
+
+/**
+ * If we are using a static profile, we must clear axios defaults so that if we make requests
+ * they are not using an access token and will throw a bad request error
+ * @returns {void}
+ */
+const clearAxiosHeaders = () => {
+  axios.defaults.baseURL = '';
+  axios.defaults.headers['Authorization'] = ``;
+  axios.defaults.headers['Content-Type'] = '';
 }
 
 /**
@@ -76,6 +107,7 @@ const refreshToken = async () => {
     window.localStorage.setItem(LOCALSTORAGE_KEYS.accessToken, data.access_token);
     window.localStorage.setItem(LOCALSTORAGE_KEYS.timestamp, Date.now());
     window.localStorage.setItem(LOCALSTORAGE_KEYS.expireTime, data.expires_in);
+    setAxiosHeaders(data.access_token);
 
     // Reload app for changes to take effect
     window.location.reload();
@@ -89,7 +121,7 @@ const refreshToken = async () => {
  * or URL query params if logging in for the first time
  * @returns {string} A Spotify access token
  */
-const getAccessToken = () =>{
+const getProfileType = () =>{
   if (SSR) {
     //We want to skip this method on SSR
     return null;
@@ -100,23 +132,27 @@ const getAccessToken = () =>{
   const queryParams = {
     [LOCALSTORAGE_KEYS.accessToken]: urlParams.get('access_token'),
     [LOCALSTORAGE_KEYS.refreshToken]: urlParams.get('refresh_token'),
-    [LOCALSTORAGE_KEYS.expireTime]: urlParams.get('expires_in')
-  }
-  
-  const hasError = urlParams.get('error');
-
-  // If error or access token has expired or access token in local storage not defined
-  if (hasError || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
-    refreshToken();
+    [LOCALSTORAGE_KEYS.expireTime]: urlParams.get('expires_in'),
+    [LOCALSTORAGE_KEYS.isStaticProfile]: urlParams.get('static_profile')
   }
 
-  // If valid access token in local storage
-  if (LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {
-    return LOCALSTORAGE_VALUES.accessToken;
+  // Prioritize login in this order: URL params, static page, access token
+
+  // If there is static profile in URL params, user has gone into static profile for the first time
+  if (queryParams[LOCALSTORAGE_KEYS.isStaticProfile]) {
+    clearAxiosHeaders();
+    // Store static profile boolean in local storage
+    window.localStorage.setItem(LOCALSTORAGE_KEYS.isStaticProfile, queryParams[LOCALSTORAGE_KEYS.isStaticProfile]);
+
+    return {
+      token: false,
+      staticProfile: queryParams[LOCALSTORAGE_KEYS.isStaticProfile]
+    };
   }
-  
+
   // If there is a token in the URL params, user is logging in for the first time
   if (queryParams[LOCALSTORAGE_KEYS.accessToken]) {
+    setAxiosHeaders(queryParams[LOCALSTORAGE_KEYS.accessToken]);
     // Store all params in localStorage
     for (const property in queryParams) {
       window.localStorage.setItem(property, queryParams[property]);
@@ -124,23 +160,46 @@ const getAccessToken = () =>{
     // Set timestamp
     window.localStorage.setItem(LOCALSTORAGE_KEYS.timestamp, Date.now());
     // Return access token from query params
-    return queryParams[LOCALSTORAGE_KEYS.accessToken];
+    return {
+      token: queryParams[LOCALSTORAGE_KEYS.accessToken],
+      staticProfile: false
+    };
   }
 
+  // If valid static profile boolean in local storage
+  if (LOCALSTORAGE_VALUES.isStaticProfile && LOCALSTORAGE_VALUES.isStaticProfile !== 'null') {
+    clearAxiosHeaders();
+    return {
+      token: false,
+      staticProfile: LOCALSTORAGE_VALUES.isStaticProfile
+    };
+  }
+  
+  //Handle access token case
+  const hasError = urlParams.get('error');
 
-  // We should not get here
-  return false;
+  // If error or access token has expired or access token in local storage not defined
+  if (hasError || hasTokenExpired() || LOCALSTORAGE_VALUES.accessToken === 'undefined') {
+    refreshToken();
+  }
+  
+  // If valid access token in local storage
+  if (LOCALSTORAGE_VALUES.accessToken && LOCALSTORAGE_VALUES.accessToken !== 'undefined') {
+    setAxiosHeaders(LOCALSTORAGE_VALUES.accessToken);
+    return {
+      token: LOCALSTORAGE_VALUES.accessToken,
+      staticProfile: false
+    };
+  }
+
+  // Get here if not logged in, in any way
+  return {
+    token: false,
+    staticProfile: false
+  };
 };
 
-export const accessToken = getAccessToken();
-
-/**
- * Axios global request headers
- * https://github.com/axios/axios#global-axios-defaults
- */
-axios.defaults.baseURL = 'https://api.spotify.com/v1';
-axios.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
-axios.defaults.headers['Content-Type'] = 'application/json';
+export const profileType = getProfileType();
 
 /**
  * Get Current User's Profile - store Spotify User ID in localStorage
@@ -148,6 +207,9 @@ axios.defaults.headers['Content-Type'] = 'application/json';
  * @returns {Promise}
  */
 export const getCurrentUserProfile = async () => {
+  if (profileType.staticProfile) {
+    return staticUserProfile;
+  }
   const response = await axios.get('/me');
   window.localStorage.setItem('user_id', response.data.id);
   return response;
@@ -172,6 +234,9 @@ export const getCurrentUserID = async () => {
  * @returns {Promise}
  */
 export const getCurrentUserPlaylists = (limit = 20) => {
+  if (profileType.staticProfile) {
+    return staticPlaylists;
+  }
   return axios.get(`/me/playlists?limit=${limit}`);
 };
 
@@ -182,6 +247,15 @@ export const getCurrentUserPlaylists = (limit = 20) => {
  * @returns {Promise}
  */
 export const getTopArtists = (time_range = 'short_term') => {
+  if (profileType.staticProfile) {
+    if (time_range == 'short_term') {
+      return staticArtistsShortTerm;
+    } else if (time_range == 'medium_term') {
+      return staticArtistsMediumTerm;
+    } else {
+      return staticArtistsLongTerm;
+    }
+  }
   return axios.get(`/me/top/artists?time_range=${time_range}`);
 };
 
@@ -192,6 +266,15 @@ export const getTopArtists = (time_range = 'short_term') => {
  * @returns {Promise}
  */
 export const getTopTracks = (time_range = 'short_term', limit = 20) => {
+  if (profileType.staticProfile) {
+    if (time_range == 'short_term') {
+      return staticTracksShortTerm;
+    } else if (time_range == 'medium_term') {
+      return staticTracksMediumTerm;
+    } else {
+      return staticTracksLongTerm;
+    }
+  }
   return axios.get(`/me/top/tracks?time_range=${time_range}&limit=${limit}`);
 };
 
@@ -202,6 +285,16 @@ export const getTopTracks = (time_range = 'short_term', limit = 20) => {
  * @returns {Promise}
  */
 export const getPlaylistById = (playlist_id) => {
+  if (profileType.staticProfile) {
+    const numPlaylists = staticPlaylistsTracks.playlists.length;
+
+    for (let i = 0; i < numPlaylists; i++) {
+      const playlist = staticPlaylistsTracks.playlists[i];
+      if (playlist.data.id == playlist_id) {
+        return playlist;
+      }
+    }
+  }
   return axios.get(`/playlists/${playlist_id}`);
 }
 

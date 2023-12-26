@@ -1,6 +1,6 @@
 "use client";
 
-import { getPlaylistById, getAudioFeaturesForTracks } from "@/app/home/spotify";
+import { getPlaylistById, getAudioFeaturesForTracks, profileType } from "@/app/home/spotify";
 import { useState, useEffect, useMemo } from "react";
 import { catchErrors } from "@/app/home/utils";
 import { StyledHeader, StyledDropdown } from "@/styles";
@@ -15,13 +15,16 @@ export default function Playlist({params}) {
   const [sortValue, setSortValue] = useState('');
   const sortOptions = ['danceability', 'tempo', 'energy'];
 
-  
-
   useEffect(() => {
     const fetchData = async () => {
       const {data} = await getPlaylistById(params.playlist_id);
       setPlaylist(data);
-      setTracksData(data.tracks);
+      if (profileType.token) {
+        setTracksData(data.tracks);
+      }else if (profileType.staticProfile){
+        const tracksObject = data.tracks.items.map(item => item.track);
+        setTracks(tracksObject);
+      }
     }
 
     catchErrors(fetchData());
@@ -33,7 +36,7 @@ export default function Playlist({params}) {
     }
 
     const fetchMoreData = async () => {
-      if (tracksData.next){
+      if (tracksData.next && profileType.token){
         const { data } = await axios.get(tracksData.next)
         // We use data and not data.tracks here because now we have got the tracks next url which returns tracks 
         // Using data.tracks was preventing us from getting next tracks and I wasn't sure why at the time
@@ -132,26 +135,41 @@ export default function Playlist({params}) {
 
         <main>
           <SectionWrapper title="Playlist" breadcrumb="true">
-            <StyledDropdown active={sortValue}>
-              <label className="sr-only" htmlFor="order-select">Sort Tracks</label>
-              <select 
-                name="track-order"
-                id="order-select"
-                onChange={e => setSortValue(e.target.value)}
-              >
-                <option value="">Sort tracks</option>
-                {sortOptions.map((option, i) => (
-                  <option value={option} key={i}>
-                    {`${option.charAt(0).toUpperCase()}${option.slice(1)}`}
-                  </option>
-                ))}
-              </select>
-            </StyledDropdown>
-            {sortedTracks ? (
-              <TrackList tracks={sortedTracks} />
-            ) : (
-              <Loader />
+            {profileType.token && (
+              <StyledDropdown active={sortValue}>
+                <label className="sr-only" htmlFor="order-select">Sort Tracks</label>
+                <select 
+                  name="track-order"
+                  id="order-select"
+                  onChange={e => setSortValue(e.target.value)}
+                >
+                  <option value="">Sort tracks</option>
+                  {sortOptions.map((option, i) => (
+                    <option value={option} key={i}>
+                      {`${option.charAt(0).toUpperCase()}${option.slice(1)}`}
+                    </option>
+                  ))}
+                </select>
+              </StyledDropdown>
             )}
+            {profileType.token ? (
+              <>
+                {sortedTracks ? (
+                  <TrackList tracks={sortedTracks} />
+                ) : (
+                  <Loader />
+                )}
+              </>
+            ) : (
+              <>
+                {tracks ? (
+                  <TrackList tracks={tracks} />
+                ): (
+                  <Loader />
+                )}
+              </>
+            )
+            }
           </SectionWrapper>
         </main>
     </>
