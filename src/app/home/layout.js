@@ -35,7 +35,7 @@ export default function HomeLayout({children}) {
     })
   }, [])
 
-  console.log(`token: ${profileType?.token}, static: ${profileType?.staticProfile}`);
+  //console.log(`token: ${profileType?.token}, static: ${profileType?.staticProfile}`);
 
   return (
     <div>

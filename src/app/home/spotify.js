@@ -136,8 +136,6 @@ const getProfileType = () =>{
     [LOCALSTORAGE_KEYS.isStaticProfile]: urlParams.get('static_profile')
   }
 
-  console.log(queryParams);
-
   // Prioritize login in this order: URL params, static page, access token
 
   // If there is static profile in URL params, user has gone into static profile for the first time
@@ -170,7 +168,6 @@ const getProfileType = () =>{
 
   // If valid static profile boolean in local storage
   if (LOCALSTORAGE_VALUES.isStaticProfile && LOCALSTORAGE_VALUES.isStaticProfile !== 'null') {
-    console.log("SETTING STATIC")
     clearAxiosHeaders();
     return {
       token: false,
