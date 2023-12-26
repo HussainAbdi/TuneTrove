@@ -1,4 +1,4 @@
-TuneTrove is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) but using a dedicated Node.js server and Express.js to handle routing and requests. It's created to match and mimic the Spotify UI (thanks to the folks at [newline.co](https://www.newline.co/)) and shows you your Spotify "profile" but with some twists!
+TuneTrove is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) but using a dedicated Node.js server and Express.js to handle routing and requests. It's created to match and mimic the Spotify UI using Styled Components (thanks to the folks at [newline.co](https://www.newline.co/)) and shows you your Spotify "profile" but with some twists!
 
 You can see your Top Artists and Top Tracks from the last month, 6 months, all time - and ✨ create playlists ✨ around this data. You can also see your public playlists and sort them based on some of Spotify's track properties (danceability, tempo, energy). More features to come soon!
 
