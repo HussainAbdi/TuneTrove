@@ -2,7 +2,9 @@ TuneTrove is a [Next.js](https://nextjs.org/) project bootstrapped with [`create
 
 You can see your Top Artists and Top Tracks from the last month, 6 months, all time - and ✨ create playlists ✨ around this data. You can also see your public playlists and sort them based on some of Spotify's track properties (danceability, tempo, energy). More features to come soon!
 
-TuneTrove is deployed using Heroku at [hussainabdi.com](https://www.hussainabdi.com). Currently, due to Spotify API limitations only those with early access can use it. I'm working on getting it approved for public use but in the meanwhile you can request early access [here](mailto:hussain.abdi@uwaterloo.ca).
+TuneTrove is deployed using Heroku at [hussainabdi.com](https://www.hussainabdi.com). You can click the "Log in with default profile" button to see it in action without logging into your own Spotify account. Currently, due to Spotify API limitations only those with early access can use it with their own account. I'm working on getting it approved for public use but in the meanwhile you can also request early access [here](mailto:hussain.abdi@uwaterloo.ca).
+
+
 
 ## Getting Started locally
 You will need a Spotify _Client ID_ and _Client Secret_ which you can get by creating your own Spotify app following the instructions [here](https://developer.spotify.com/documentation/web-api/tutorials/getting-started#create-an-app). While following these instructions, set your _Redirect URI_ to ```http://localhost:8888/callback```.
