@@ -5,6 +5,7 @@ import { profileType, logout } from './spotify';
 import styles from '@/styles/page.module.css';
 import { Login } from '@/app/home';
 import styled from 'styled-components';
+import { ModalProvider } from 'styled-react-modal';
 
 const StyledLogoutButton = styled.button`
   position: absolute;
@@ -39,16 +40,18 @@ export default function HomeLayout({children}) {
 
   return (
     <div>
-      {!profile.token && !profile.staticProfile ? (
-        <Login />
-      ) : (
-        <>
-          <StyledLogoutButton className={styles.card} onClick={logout}> 
-                Log Out <span>-&gt;</span>
-          </StyledLogoutButton>
-          {children}
-        </>
-      )}
+      <ModalProvider>
+        {!profile.token && !profile.staticProfile ? (
+          <Login />
+        ) : (
+          <>
+            <StyledLogoutButton className={styles.card} onClick={logout}> 
+                  Log Out <span>-&gt;</span>
+            </StyledLogoutButton>
+            {children}
+          </>
+        )}
+      </ModalProvider>
     </div>
   )
 }

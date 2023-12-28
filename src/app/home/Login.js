@@ -2,35 +2,8 @@ import styledComponents from 'styled-components';
 import styles from '@/styles/page.module.css';
 import Image from 'next/image';
 import { BACKEND_URI } from './utils';
-
-const StyledLoginContainer = styledComponents.main`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: var(--spacing-xxl) var(--spacing-lg);
-
-  @media (max-width: 700px) {
-    padding: var(--spacing-lg);
-  }
-`;
-
-const StyledLoginButton = styledComponents.a`
-  display: inline-block;
-  background-color: var(--green);
-  color: var(--white);
-  border-radius: var(--border-radius-pill);
-  font-weight: 700;
-  font-size: var(--fz-lg);
-  padding: var(--spacing-sm) var(--spacing-xl);
-  white-space: nowrap;
-
-  &:hover,
-  &:focus {
-    text-decoration: none;
-    filter: brightness(1.1);
-  }
-`;
+import EarlyAccessLoginButton from '@/components/EarlyAccessButton';
+import { StyledLoginContainer, StyledLoginButton } from '@/styles';
 
 const CenteredContainer = styledComponents.div`
   display: flex;
@@ -70,11 +43,7 @@ const Login = () => (
         </StyledLoginButton>
       </StyledLoginContainer>
       OR
-      <StyledLoginContainer>
-        <StyledLoginButton href={`${BACKEND_URI()}/login`} >
-          Log in with early access
-        </StyledLoginButton>
-      </StyledLoginContainer>
+      <EarlyAccessLoginButton />
     </CenteredContainer>
   </div>
 );
