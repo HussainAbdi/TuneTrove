@@ -13,8 +13,8 @@ const ModalDescription = styled.div`
 const RequestAccessLink = styled.a`
   color: var(--green);
   text-decoration: underline;
+  margin-top: 1rem;
 
-  
   &:hover {
     color: var(--light-green);
   }
@@ -48,11 +48,9 @@ const EarlyAccessLoginButton = () => {
             <p><b>Attention: In order to use this feature you must have been given early access!</b></p>
           </center>
         </ModalDescription>
-        <a onClick={toggleModal} href={`${BACKEND_URI()}/login`}>
-          <StyledLoginButton>
-            I have early access
-          </StyledLoginButton>
-        </a>
+        <StyledLoginButton onClick={toggleModal} href={`${BACKEND_URI()}/login`}>
+          I have early access
+        </StyledLoginButton>
         <RequestAccessLink href={mailtoString}>Request early access here</RequestAccessLink>
         <button style={{margin:'1rem'}} onClick={toggleModal}>Close me</button>
       </StyledModal>
