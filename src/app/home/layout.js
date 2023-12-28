@@ -5,7 +5,11 @@ import { profileType, logout } from './spotify';
 import styles from '@/styles/page.module.css';
 import { Login } from '@/app/home';
 import styled from 'styled-components';
-import { ModalProvider } from 'styled-react-modal';
+import { ModalProvider, BaseModalBackground } from 'styled-react-modal';
+
+const SpecialModalBackground = styled(BaseModalBackground)`
+  background-color: rgb(255 255 255 / 50%);
+`
 
 const StyledLogoutButton = styled.button`
   position: absolute;
@@ -40,7 +44,7 @@ export default function HomeLayout({children}) {
 
   return (
     <div>
-      <ModalProvider>
+      <ModalProvider backgroundComponent={SpecialModalBackground}>
         {!profile.token && !profile.staticProfile ? (
           <Login />
         ) : (
