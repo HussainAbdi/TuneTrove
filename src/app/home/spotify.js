@@ -202,6 +202,23 @@ const getProfileType = () =>{
 export const profileType = getProfileType();
 
 /**
+ * Interceptor for axios requests 
+ * Here, it is used to handle 403 errors
+ */
+axios.interceptors.response.use(
+  res => res,
+  err => {
+    // Any HTTP Code which is not 2xx will be considered as error
+    const statusCode = err.response.status;
+    if (statusCode === 403) {
+      logout();
+    }
+
+    throw err;
+  }
+);
+
+/**
  * Get Current User's Profile - store Spotify User ID in localStorage
  * https://developer.spotify.com/documentation/web-api/reference/get-current-users-profile
  * @returns {Promise}
