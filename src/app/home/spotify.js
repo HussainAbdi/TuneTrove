@@ -143,8 +143,9 @@ const refreshToken = async () => {
 };
 
 /**
- * Handles logic for retrieving the spotify access token from localStorage
- * or URL query params if logging in for the first time
+ * Handles logic for retrieving the logged in profile type
+ * Either using an access token for token profile type, or static profile.
+ * Uses both localStorage and query params, depending on when the user logs in.
  * @returns {string} A Spotify access token
  */
 const getProfileType = () =>{
