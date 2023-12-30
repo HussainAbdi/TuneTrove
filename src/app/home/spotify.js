@@ -378,7 +378,7 @@ const formattedDate = () => {
  */
 export const createPlaylist = async (user_id, trackUris, timeRange) => {
   const timeMapping = {
-    'short': "last 4 weeks",
+    'short': "this month",
     'medium': "last 6 months",
     'long': "of all time"
   }
