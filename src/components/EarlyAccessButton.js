@@ -45,7 +45,7 @@ const EarlyAccessLoginButton = () => {
         onEscapeKeydown={toggleModal}>
         <ModalDescription>
           <center>
-            <p><b>Attention: In order to use this feature you must have been given early access!</b></p>
+            <p><b>Attention: Due to Spotify API changes, you must have been given early access to use this feature!</b></p>
           </center>
         </ModalDescription>
         <StyledLoginButton onClick={toggleModal} href={`${BACKEND_URI()}/login`}>
