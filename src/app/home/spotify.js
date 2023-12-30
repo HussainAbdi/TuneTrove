@@ -60,11 +60,16 @@ const clearAxiosHeaders = () => {
  */
 export const logout = () => { // Why export? Probably because we will be using this function outside of this page
   // WHY DON'T WE NEED TO USE SSR BOOLEAN HERE??? Because so far we are only calling it in a place where we already have that check.
-  for (const property in LOCALSTORAGE_KEYS) {
-    window.localStorage.removeItem(LOCALSTORAGE_KEYS[property]);
-  }
-  //Navigate to homepage
-  window.location = window.location.origin;
+  const url = 'https://accounts.spotify.com/logout';
+  const spotifyLogoutWindow = window.open(url, 'Spotify Logout');
+  setTimeout(() => {
+    spotifyLogoutWindow.close();
+    for (const property in LOCALSTORAGE_KEYS) {
+      window.localStorage.removeItem(LOCALSTORAGE_KEYS[property]);
+    }
+    //Navigate to homepage
+    window.location = window.location.origin;
+  }, 2000)
 }
 
 /**
@@ -211,7 +216,7 @@ axios.interceptors.response.use(
     // Any HTTP Code which is not 2xx will be considered as error
     const statusCode = err.response.status;
     if (statusCode === 403) {
-      logout();
+      // TODO: Trigger Modal to prompt user to logout and relogin with authorized account
     }
 
     throw err;
