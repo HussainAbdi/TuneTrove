@@ -55,11 +55,32 @@ const clearAxiosHeaders = () => {
 }
 
 /**
- * Clears out localStorage and navigates to homepage
+ * Chooses correct logout function depending on profile type.
+ * Assumes that if profileType.token is flase, profileType.staticProfile is true.
  * @returns {void}
  */
-export const logout = () => { // Why export? Probably because we will be using this function outside of this page
-  // WHY DON'T WE NEED TO USE SSR BOOLEAN HERE??? Because so far we are only calling it in a place where we already have that check.
+export const logout = () => {
+  profileType.token ? tokenLogout() : staticLogout();
+}
+
+/**
+ * Static page logout: Clears out localStorage and navigates to homepage.
+ * @returns {void}
+ */
+export const staticLogout = () => {
+  for (const property in LOCALSTORAGE_KEYS) {
+    window.localStorage.removeItem(LOCALSTORAGE_KEYS[property]);
+  }
+  //Navigate to homepage
+  window.location = window.location.origin;
+}
+
+/**
+ * Early access logout: Logs out of spotify everywhere. 
+ * Then clears localStorage and navigates to homepage.
+ * @returns {void}
+ */
+export const tokenLogout = () => {
   const url = 'https://accounts.spotify.com/logout';
   const spotifyLogoutWindow = window.open(url, 'Spotify Logout');
   setTimeout(() => {
