@@ -55,19 +55,10 @@ const clearAxiosHeaders = () => {
 }
 
 /**
- * Chooses correct logout function depending on profile type.
- * Assumes that if profileType.token is flase, profileType.staticProfile is true.
+ * Clears out localStorage and navigates to homepage.
  * @returns {void}
  */
 export const logout = () => {
-  profileType.token ? tokenLogout() : staticLogout();
-}
-
-/**
- * Static page logout: Clears out localStorage and navigates to homepage.
- * @returns {void}
- */
-export const staticLogout = () => {
   for (const property in LOCALSTORAGE_KEYS) {
     window.localStorage.removeItem(LOCALSTORAGE_KEYS[property]);
   }
@@ -76,11 +67,12 @@ export const staticLogout = () => {
 }
 
 /**
- * Early access logout: Logs out of spotify everywhere. 
+ * Logs out of spotify everywhere. 
  * Then clears localStorage and navigates to homepage.
+ * Currently used when encoutering 403 errors to let user log out and try again.
  * @returns {void}
  */
-export const tokenLogout = () => {
+export const logoutEverywhere = () => {
   const url = 'https://accounts.spotify.com/logout';
   const spotifyLogoutWindow = window.open(url, 'Spotify Logout');
   setTimeout(() => {
