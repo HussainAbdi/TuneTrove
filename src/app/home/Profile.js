@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getCurrentUserProfile, getCurrentUserPlaylists, getTopArtists, getTopTracks } from "@/app/home/spotify";
 import { StyledHeader, StyledLoginButton} from "@/styles";
-import { ArtistsGrid, PlaylistsGrid, SectionWrapper, TrackList, Loader } from "@/components";
+import { ArtistsGrid, PlaylistsGrid, SectionWrapper, TrackList, Loader, RequestAccessLink } from "@/components";
 import { logoutEverywhere } from "@/app/home/spotify";
 
 const Profile = () => {
@@ -40,11 +40,13 @@ const Profile = () => {
   if (error?.response.status === 403){
     return (
       <div style={{display: "flex", height: "100vh", justifyContent: "center", alignItems: "center"}}>
-        <p style={{textAlign: "center"}}>
+        <p style={{marginLeft: "1rem", marginRight:"1rem", textAlign: "center"}}>
             Looks like you don't have early access on this account!<br />
             Fear not, click the button below to log out from Spotify and try a different account.<br />
             <br />
-            <StyledLoginButton onClick={logoutEverywhere}>Log out from Spotify</StyledLoginButton>
+            <StyledLoginButton onClick={logoutEverywhere}>Log out from Spotify</StyledLoginButton><br />
+            <br />
+            Alternatively, you can <RequestAccessLink>request access here</RequestAccessLink> for this account.<br />
         </p>
       </div>
     )
