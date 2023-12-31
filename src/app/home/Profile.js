@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
-import { catchErrors } from "@/app/home/utils";
 import { getCurrentUserProfile, getCurrentUserPlaylists, getTopArtists, getTopTracks } from "@/app/home/spotify";
-import { StyledHeader } from "@/styles";
+import { StyledHeader, StyledLoginButton} from "@/styles";
 import { ArtistsGrid, PlaylistsGrid, SectionWrapper, TrackList, Loader } from "@/components";
+import { logoutEverywhere } from "@/app/home/spotify";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [playlists, setPlaylists] = useState(null);
   const [topArtists, setTopArtists] = useState(null);
   const [topTracks, setTopTracks] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,8 +30,25 @@ const Profile = () => {
       setTopTracks(userTopTracks.data);
     };
 
-    catchErrors(fetchData());
+    fetchData().catch((error) => {
+      console.log("Fetch Data Error: ", error)
+      setError(error)
+    });
+
   }, []);
+
+  if (error?.response.status === 403){
+    return (
+      <div style={{display: "flex", height: "100vh", justifyContent: "center", alignItems: "center"}}>
+        <p style={{textAlign: "center"}}>
+            Looks like you don't have early access on this account!<br />
+            Fear not, click the button below to log out from Spotify and try a different account.<br />
+            <br />
+            <StyledLoginButton onClick={logoutEverywhere}>Log out from Spotify</StyledLoginButton>
+        </p>
+      </div>
+    )
+  } 
 
   return (
     <>
