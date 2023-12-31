@@ -39,7 +39,7 @@ const Profile = () => {
 
   if (error?.response.status === 403){
     return (
-      <div style={{display: "flex", height: "100vh", alignItems: "center"}}>
+      <div style={{display: "flex", height: "100vh", justifyContent: "center", alignItems: "center"}}>
         <p style={{textAlign: "center"}}>
             Looks like you don't have early access on this account!<br />
             Fear not, click the button below to log out from Spotify and try a different account.<br />
