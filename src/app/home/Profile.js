@@ -44,7 +44,7 @@ const Profile = () => {
             Looks like you don't have early access on this account!<br />
             Fear not, click the button below to log out from Spotify and try a different account.<br />
             <br />
-            <StyledLoginButton onClick={logoutEverywhere}>Log out everywhere</StyledLoginButton>
+            <StyledLoginButton onClick={logoutEverywhere}>Log out from Spotify</StyledLoginButton>
         </p>
       </div>
     )
