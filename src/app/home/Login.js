@@ -2,7 +2,7 @@ import styledComponents from 'styled-components';
 import styles from '@/styles/page.module.css';
 import Image from 'next/image';
 import { BACKEND_URI } from './utils';
-import EarlyAccessLoginButton from '@/components/EarlyAccessButton';
+import { EarlyAccessLoginButton } from '@/components';
 import { StyledLoginContainer, StyledLoginButton } from '@/styles';
 
 const CenteredContainer = styledComponents.div`
