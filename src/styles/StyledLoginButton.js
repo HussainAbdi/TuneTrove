@@ -11,6 +11,7 @@ const StyledLoginButton = styled.a`
   font-size: var(--fz-lg);
   padding: var(--spacing-sm) var(--spacing-xl);
   white-space: nowrap;
+  cursor: pointer;
 
   &:hover,
   &:focus {
