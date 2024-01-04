@@ -230,7 +230,7 @@ axios.interceptors.response.use(
     // Any HTTP Code which is not 2xx will be considered as error
     const statusCode = err.response.status;
     if (statusCode === 403) {
-      // TODO: Trigger Modal to prompt user to logout and relogin with authorized account
+      
     }
 
     throw err;
