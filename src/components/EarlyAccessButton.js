@@ -24,6 +24,7 @@ const EarlyAccessLoginButton = () => {
         <StyledLoginButton onClick={toggleModal} >
           Log in with early access
         </StyledLoginButton>
+        <RequestAccessLink>Request early access here</RequestAccessLink>
       </StyledLoginContainer>
       <StyledModal
         isOpen={isOpen}

@@ -39,7 +39,7 @@ const Login = () => (
     <CenteredContainer>
       <StyledLoginContainer>
         <StyledLoginButton href={`${BACKEND_URI()}/login?static_profile=true`} >
-          Log in with default profile
+          Demo
         </StyledLoginButton>
       </StyledLoginContainer>
       OR
